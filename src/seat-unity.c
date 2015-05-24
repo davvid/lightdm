@@ -197,6 +197,7 @@ create_x_server (Seat *seat)
     XServerLocal *x_server;
     const gchar *command = NULL, *layout = NULL, *config_file = NULL;
     gboolean allow_tcp;
+    gboolean allow_vt_switch;
     gchar *id;
 
     l_debug (seat, "Starting X server on Unity compositor");
@@ -227,6 +228,9 @@ create_x_server (Seat *seat)
 
     allow_tcp = seat_get_boolean_property (seat, "xserver-allow-tcp");
     x_server_local_set_allow_tcp (x_server, allow_tcp);
+
+    allow_vt_switch = seat_get_boolean_property (seat, "xserver-allow-vt-switch");
+    x_server_local_set_allow_vt_switch (x_server, allow_vt_switch);
 
     return x_server;
 }

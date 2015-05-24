@@ -69,6 +69,7 @@ struct XServerLocalPrivate
 
     /* VT to run on */
     gint vt;
+    gboolean allow_vt_switch;
     gboolean have_vt_ref;
 
     /* Background to set */
@@ -230,6 +231,13 @@ x_server_local_set_allow_tcp (XServerLocal *server, gboolean allow_tcp)
 {
     g_return_if_fail (server != NULL);
     server->priv->allow_tcp = allow_tcp;
+}
+
+void
+x_server_local_set_allow_vt_switch (XServerLocal *server, gboolean allow_vt_switch)
+{
+    g_return_if_fail (server != NULL);
+    server->priv->allow_vt_switch = allow_vt_switch;
 }
 
 void
@@ -500,7 +508,12 @@ x_server_local_start (DisplayServer *display_server)
         g_string_append (command, " -nolisten tcp");
 
     if (server->priv->vt >= 0)
-        g_string_append_printf (command, " vt%d -novtswitch", server->priv->vt);
+    {
+        if (server->priv->allow_vt_switch)
+            g_string_append_printf (command, " vt%d", server->priv->vt);
+        else
+            g_string_append_printf (command, " vt%d -novtswitch", server->priv->vt);
+    }
 
     if (server->priv->background)
         g_string_append_printf (command, " -background %s", server->priv->background);
