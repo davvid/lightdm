@@ -1,3 +1,9 @@
+Overview of chnages in lightdm 1.16.0
+
+    * Allow virtual terminal switching if xserver-allow-vt-switch is true.
+      Setting xserver-allow-vt-switch=true will inhibit passing the
+      "-novtswitch" option when starting the X server.
+
 Overview of changes in lightdm 1.15.0
 
     * Deprecate [SeatDefaults] in favour of [Seat:*]
